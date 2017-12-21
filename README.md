@@ -16,6 +16,8 @@ Features
 
 ## Subindo a aplicação via Docker
 
+A dockerização é feita a partir de uma trigger disparada pelo Github para o DockerHub, para o repositório https://hub.docker.com/r/robsonrigatto/feed-service/
+
 * Baixe a imagem do docker `docker pull robsonrigatto/feed-service`
 * Execute o comando `docker run -p 8080:8080 -t robsonrigatto/feed-service`
 
