@@ -1,4 +1,4 @@
-# Web service de consumo do feed de noticias da revista auto esporte
+# Web service de consumo do feed de noticias da revista Autoesporte
 
 Tecnologia utilizada
 > Spring Boot (plataforma Java)
@@ -16,13 +16,13 @@ Features
 
 ## Subindo a aplicação via Docker
 
-* Baixe a imagem do docker [link]
-* Execute o comando `docker run ....`
+* Baixe a imagem do docker `docker pull robsonrigatto/feed-service`
+* Execute o comando `docker run -p 8080:8080 -t robsonrigatto/feed-service`
 
 
 ## Utilizando Web service
 
-* Faça uma requisição POST para a URL http://localhost:8080/login com o corpo da requisição com o seguinte conteúdo:
+* Faça uma requisição POST para a URL http://localhost:8080/login com o corpo da requisição com o conteúdo abaixo:
 ```
 {
   "username":"user",
