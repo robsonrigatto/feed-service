@@ -33,7 +33,7 @@ Features
 ```
 Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwiZXhwIjoxNTE0NzEyNTI3fQ.ai3uvG-OK8NaK1tTJTytuWfyH8RH3d7gWL1pHjjyCaUjnlZWWWaX6MBMdJgeomeEJ-n9VaI8rU_n1WjqUHoCNg
 ```
-* Faça uma requisição GET para a URL http://localhost:8080/feeds/autoesporte passando o token obtido acima no campo **Authorization** do header da request
+* Faça uma requisição GET para a URL http://localhost:8080/feeds/autoesporte passando o token (Incluindo o prefixo _Bearer_) obtido acima no campo **Authorization** do header da request
 * O retorno em formato JSON virá no retorno da chamada HTTP, como o exemplo abaixo:
 ```
 {
