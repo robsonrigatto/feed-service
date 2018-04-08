@@ -1,33 +1,45 @@
 package br.com.rr.feed.controller;
 
+import br.com.rr.feed.service.FeedService;
+import br.com.rr.feed.vo.FeedVO;
+import br.com.rr.feed.vo.ItemVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
-import br.com.rr.feed.model.Feed;
-import br.com.rr.feed.service.XMLParser;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("feeds")
+
 public class FeedController {
 	
 	@Autowired
-	private XMLParser xmlReader;
+	private FeedService feedService;
 
 	@ResponseBody
-	@GetMapping(path = "autoesporte")
-	public ResponseEntity<Feed> autoesporte() {
+	@GetMapping
+	public ResponseEntity<FeedVO> getFeed(@RequestHeader(value = "Authorization") String authorization) {
 		try {
-			Feed feed = this.xmlReader.parseToJSON("http://revistaautoesporte.globo.com/rss/ultimas/feed.xml");
-			return new ResponseEntity<Feed>(feed, HttpStatus.OK);
+			FeedVO feed = this.feedService.getFeed();
+			return new ResponseEntity<FeedVO>(feed, HttpStatus.OK);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
+
+    @PostMapping(value = "add", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> addItem(@RequestBody ItemVO itemVO, @RequestHeader(value = "Authorization") String authorization) {
+        try {
+            this.feedService.addItem(itemVO);
+            return new ResponseEntity<Void>(HttpStatus.CREATED);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+    }
 }

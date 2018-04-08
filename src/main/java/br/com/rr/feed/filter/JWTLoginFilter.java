@@ -17,7 +17,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import br.com.rr.feed.model.AccountCredentials;
+import br.com.rr.feed.vo.AccountCredentialsVO;
 import br.com.rr.feed.service.TokenAuthenticationService;
 
 public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
@@ -29,7 +29,7 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException, IOException, ServletException {
-		AccountCredentials credentials = new ObjectMapper().readValue(request.getInputStream(), AccountCredentials.class);
+		AccountCredentialsVO credentials = new ObjectMapper().readValue(request.getInputStream(), AccountCredentialsVO.class);
 		
 		return getAuthenticationManager().authenticate(
 				new UsernamePasswordAuthenticationToken(credentials.getUsername(), credentials.getPassword(), 

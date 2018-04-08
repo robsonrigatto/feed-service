@@ -1,4 +1,4 @@
-# Web service de consumo do feed de noticias da revista Autoesporte
+# Web service de consumo do feed de noticias
 
 Tecnologia utilizada
 > Spring Boot (plataforma Java)
@@ -7,6 +7,8 @@ Features
 * Cobertura de testes
 * Autenticação via JWT
 * Dockerização
+* JPA (Banco de Dados _H2_)
+* Documentação Swagger: http://localhost:8080/swagger-ui.html
 
 ## Subindo a aplicação via Spring Boot
 
@@ -18,8 +20,8 @@ Features
 
 A dockerização é feita a partir de uma trigger disparada pelo Github para o DockerHub, para o repositório https://hub.docker.com/r/robsonrigatto/feed-service/
 
-* Baixe a imagem do docker `docker pull robsonrigatto/feed-service`
-* Execute o comando `docker run -p 8080:8080 -t robsonrigatto/feed-service`
+* Baixe a imagem do docker `sudo docker pull robsonrigatto/feed-service`
+* Execute o comando `sudo docker run -p 8080:8080 -t robsonrigatto/feed-service`
 
 
 ## Utilizando Web service
@@ -35,7 +37,8 @@ A dockerização é feita a partir de uma trigger disparada pelo Github para o D
 ```
 Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwiZXhwIjoxNTE0NzEyNTI3fQ.ai3uvG-OK8NaK1tTJTytuWfyH8RH3d7gWL1pHjjyCaUjnlZWWWaX6MBMdJgeomeEJ-n9VaI8rU_n1WjqUHoCNg
 ```
-* Faça uma requisição GET para a URL http://localhost:8080/feeds/autoesporte passando o token (Incluindo o prefixo _Bearer_) obtido acima, no campo **Authorization** do header da request
+
+* Faça uma requisição GET para a URL http://localhost:8080/feeds passando o token (Incluindo o prefixo _Bearer_) obtido acima, no campo **Authorization** do header da request
 * O retorno em formato JSON virá no retorno da chamada HTTP, como o exemplo abaixo:
 ```
 {

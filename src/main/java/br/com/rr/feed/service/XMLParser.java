@@ -20,24 +20,24 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import br.com.rr.feed.enumeration.DescriptionType;
-import br.com.rr.feed.model.Feed;
-import br.com.rr.feed.model.Item;
-import br.com.rr.feed.model.ItemDescription;
+import br.com.rr.feed.vo.FeedVO;
+import br.com.rr.feed.vo.ItemVO;
+import br.com.rr.feed.vo.ItemDescriptionVO;
 
 @Service
 public class XMLParser {
 	
-	public Feed parseToJSON(String path) throws ParserConfigurationException, SAXException, IOException {
+	public FeedVO parseToJSON(String path) throws ParserConfigurationException, SAXException, IOException {
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-		Document document = dBuilder.parse(path);
+		Document document = dBuilder.parse(this.getClass().getClassLoader().getResourceAsStream(path));
 		return parseDocument(document);
 	}
 
-	public Feed parseDocument(Document document) {
+	public FeedVO parseDocument(Document document) {
 		document.getDocumentElement().normalize();
 		
-		Feed feed = new Feed();
+		FeedVO feed = new FeedVO();
 
 		NodeList nList = document.getElementsByTagName("item");
 		
@@ -49,7 +49,7 @@ public class XMLParser {
 			String link = eElement.getElementsByTagName("link").item(0).getTextContent();
 			String descriptionHtml = eElement.getElementsByTagName("description").item(0).getTextContent();
 			
-			Item item = new Item();
+			ItemVO item = new ItemVO();
 			item.setTitle(title); item.setLink(link);
 			item.setDescriptions(this.parseDescriptions(descriptionHtml));
 			
@@ -59,8 +59,8 @@ public class XMLParser {
 		return feed;
 	}
 	
-	private List<ItemDescription> parseDescriptions(String descriptionHtml) {
-		List<ItemDescription> descriptions = new ArrayList<>();
+	private List<ItemDescriptionVO> parseDescriptions(String descriptionHtml) {
+		List<ItemDescriptionVO> descriptions = new ArrayList<>();
 		org.jsoup.nodes.Document docHtml = Jsoup.parse(descriptionHtml);
 		
 		this.parseTexts(descriptions, docHtml);
@@ -70,13 +70,13 @@ public class XMLParser {
 		return descriptions;
 	}
 
-	private void parseTexts(List<ItemDescription> descriptions, org.jsoup.nodes.Document docHtml) {
+	private void parseTexts(List<ItemDescriptionVO> descriptions, org.jsoup.nodes.Document docHtml) {
 		Elements texts = docHtml.select("p");
 		for (org.jsoup.nodes.Element text : texts) {
 			String content = text.text().replace("\u00a0", StringUtils.EMPTY).trim();
 			
 			if(StringUtils.isNotBlank(content)) {
-				ItemDescription id = new ItemDescription();
+				ItemDescriptionVO id = new ItemDescriptionVO();
 				id.setType(DescriptionType.TEXT);
 				id.setContent(content);
 				descriptions.add(id);
@@ -84,10 +84,10 @@ public class XMLParser {
 		}
 	}
 
-	private void parseImages(List<ItemDescription> descriptions, org.jsoup.nodes.Document docHtml) {
+	private void parseImages(List<ItemDescriptionVO> descriptions, org.jsoup.nodes.Document docHtml) {
 		Elements images = docHtml.select("div img");
 		for (org.jsoup.nodes.Element img : images) {
-			ItemDescription id = new ItemDescription();
+			ItemDescriptionVO id = new ItemDescriptionVO();
 			String src = img.attr("src");
 			
 			id.setType(DescriptionType.IMAGE);
@@ -96,13 +96,13 @@ public class XMLParser {
 		}
 	}
 
-	private void parseLinks(List<ItemDescription> descriptions, org.jsoup.nodes.Document docHtml) {
+	private void parseLinks(List<ItemDescriptionVO> descriptions, org.jsoup.nodes.Document docHtml) {
 		Elements links = docHtml.select("div ul");
 		for (org.jsoup.nodes.Element link : links) {
 			Elements linksElement = link.select("li a");
 			
 			if(!linksElement.isEmpty()) {
-				ItemDescription id = new ItemDescription();
+				ItemDescriptionVO id = new ItemDescriptionVO();
 				id.setType(DescriptionType.LINKS);
 				List<String> linksUrl = new ArrayList<>();
 				

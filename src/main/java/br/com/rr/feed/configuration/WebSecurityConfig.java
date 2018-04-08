@@ -16,18 +16,27 @@ import br.com.rr.feed.filter.JWTLoginFilter;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private static final String[] AUTH_WHITELIST = {
+        // -- swagger ui
+        "/swagger-resources/**",
+        "/swagger-ui.html",
+        "/v2/api-docs",
+        "/webjars/**"
+    };
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable().authorizeRequests()
-				.antMatchers(HttpMethod.POST, "/login").permitAll()
-				.anyRequest().authenticated().and()
+		    .antMatchers(AUTH_WHITELIST).permitAll()
+			.antMatchers(HttpMethod.POST, "/login").permitAll()
+			.anyRequest().authenticated().and()
 
-				// filter login request
-				.addFilterBefore(new JWTLoginFilter("/login", authenticationManager()),
-						UsernamePasswordAuthenticationFilter.class)
+			// filter login request
+			.addFilterBefore(new JWTLoginFilter("/login", authenticationManager()),
+					UsernamePasswordAuthenticationFilter.class)
 
-				// filter other request to check if there's a valid JWT in request header
-				.addFilterBefore(new JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+			// filter other request to check if there's a valid JWT in request header
+			.addFilterBefore(new JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 	}
 
 	@Autowired

@@ -1,6 +1,6 @@
-package br.com.rr.feed.model;
+package br.com.rr.feed.vo;
 
-public class AccountCredentials {
+public class AccountCredentialsVO {
 	
 	private String username;
 	private String password;

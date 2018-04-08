@@ -1,19 +1,19 @@
-package br.com.rr.feed.model;
+package br.com.rr.feed.vo;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Feed {
+public class FeedVO {
 
 	@JsonProperty("feed")
-	private	List<Item> items = new ArrayList<>();
+	private	List<ItemVO> items = new ArrayList<>();
 
-	public List<Item> getItems() {
+	public List<ItemVO> getItems() {
 		return items;
 	}
-	public void setItems(List<Item> items) {
+	public void setItems(List<ItemVO> items) {
 		this.items = items;
 	}
 }

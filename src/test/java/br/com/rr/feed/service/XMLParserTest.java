@@ -16,9 +16,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.w3c.dom.Document;
 
 import br.com.rr.feed.enumeration.DescriptionType;
-import br.com.rr.feed.model.Feed;
-import br.com.rr.feed.model.Item;
-import br.com.rr.feed.model.ItemDescription;
+import br.com.rr.feed.vo.FeedVO;
+import br.com.rr.feed.vo.ItemVO;
+import br.com.rr.feed.vo.ItemDescriptionVO;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -29,7 +29,7 @@ public class XMLParserTest {
 	
 	@Test
 	public void globoLinkTest() throws Exception {
-		Feed feed = xmlParser.parseToJSON("http://revistaautoesporte.globo.com/rss/ultimas/feed.xml");
+		FeedVO feed = xmlParser.parseToJSON("feed.xml");
 		
 		Assert.assertNotNull(feed);
 		Assert.assertFalse(feed.getItems().isEmpty());
@@ -57,12 +57,12 @@ public class XMLParserTest {
 		InputStream in = IOUtils.toInputStream(xml, "UTF-8");
 		
 		Document document = dBuilder.parse(in);
-		Feed feed = this.xmlParser.parseDocument(document);
+		FeedVO feed = this.xmlParser.parseDocument(document);
 		
 		Assert.assertNotNull(feed);
 		Assert.assertEquals(1, (int) feed.getItems().size());
 		
-		Item item = feed.getItems().get(0);
+		ItemVO item = feed.getItems().get(0);
 		Assert.assertEquals("Auto Esporte", item.getTitle());
 		Assert.assertEquals("http://revistaautoesporte.globo.com/", item.getLink());
 		
@@ -92,12 +92,12 @@ public class XMLParserTest {
 		InputStream in = IOUtils.toInputStream(xml, "UTF-8");
 		
 		Document document = dBuilder.parse(in);
-		Feed feed = this.xmlParser.parseDocument(document);
+		FeedVO feed = this.xmlParser.parseDocument(document);
 		
 		Assert.assertNotNull(feed);
 		Assert.assertEquals(1, (int) feed.getItems().size());
 		
-		Item item = feed.getItems().get(0);
+		ItemVO item = feed.getItems().get(0);
 		Assert.assertEquals("G1 - Portal de Noticias", item.getTitle());
 		Assert.assertEquals("http://g1.globo.com/", item.getLink());
 		
@@ -134,18 +134,18 @@ public class XMLParserTest {
 		InputStream in = IOUtils.toInputStream(xml, "UTF-8");
 		
 		Document document = dBuilder.parse(in);
-		Feed feed = this.xmlParser.parseDocument(document);
+		FeedVO feed = this.xmlParser.parseDocument(document);
 		
 		Assert.assertNotNull(feed);
 		Assert.assertEquals(1, (int) feed.getItems().size());
 		
-		Item item = feed.getItems().get(0);
+		ItemVO item = feed.getItems().get(0);
 		Assert.assertEquals("globoesporte.com", item.getTitle());
 		Assert.assertEquals("http://globoesporte.globo.com/", item.getLink());
 		
 		Assert.assertEquals(1, (int) item.getDescriptions().size());
 		
-		ItemDescription itemDescription = item.getDescriptions().get(0);
+		ItemDescriptionVO itemDescription = item.getDescriptions().get(0);
 		Assert.assertEquals(DescriptionType.LINKS, itemDescription.getType());
 		
 		List<String> linksList = (List<String>)itemDescription.getContent();
@@ -175,12 +175,12 @@ public class XMLParserTest {
 		InputStream in = IOUtils.toInputStream(xml, "UTF-8");
 		
 		Document document = dBuilder.parse(in);
-		Feed feed = this.xmlParser.parseDocument(document);
+		FeedVO feed = this.xmlParser.parseDocument(document);
 		
 		Assert.assertNotNull(feed);
 		Assert.assertEquals(1, (int) feed.getItems().size());
 		
-		Item item = feed.getItems().get(0);
+		ItemVO item = feed.getItems().get(0);
 		Assert.assertEquals("globoesporte.com", item.getTitle());
 		Assert.assertEquals("http://globoesporte.globo.com/", item.getLink());
 		
